@@ -1,0 +1,37 @@
+# Unity-generated files
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Mm]emoryCaptures/
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE Files
+.vs/
+*.csproj
+*.sln
+*.suo
+*.userprefs
+
+# Unity cache files
+/Assets/StreamingAssets/aa/
+/Library/
+/Temp/
+/[Uu]ser[Ss]ettings/
+
+# Build artifacts
+*.apk
+*.aab
+*.exe
+*.app
+
+# Netcode and plugins
+/Assets/Resources/NetworkConfig.asset.meta
+/Plugins/NetcodeForGameObjects/
+/Plugins/Firebase/
