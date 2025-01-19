@@ -20,10 +20,9 @@ desktop.ini
 *.userprefs
 
 # Unity cache files
-/Assets/StreamingAssets/aa/
-/Library/
-/Temp/
-/[Uu]ser[Ss]ettings/
+!Assets/**/*.*
+!Assets/**/*.meta
+/Assets/StreamingAssets/aa/  # Include only specific unwanted cache files if needed.
 
 # Build artifacts
 *.apk
@@ -31,7 +30,5 @@ desktop.ini
 *.exe
 *.app
 
-# Netcode and plugins
-/Assets/Resources/NetworkConfig.asset.meta
-/Plugins/NetcodeForGameObjects/
+# Exclude Netcode and plugins only if NOT vital to the project
 /Plugins/Firebase/
