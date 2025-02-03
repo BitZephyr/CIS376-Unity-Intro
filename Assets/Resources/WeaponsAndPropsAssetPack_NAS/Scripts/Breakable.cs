@@ -8,7 +8,7 @@ namespace WeaponsAndPropsAssetPack_NAS.Scripts
         [SerializeField] private Transform wholeObject;
         [SerializeField] private Transform fracturedObject;
         [SerializeField] private bool isCyclic;
-
+        
         // Core Variables
         private bool isBroken;
         private bool isClean;
@@ -16,38 +16,21 @@ namespace WeaponsAndPropsAssetPack_NAS.Scripts
         private Transform fracturedObjectInstance;
         private bool shouldBreak;
 
-        // Variables to showcase in cycle
+        // Timers
         private const float timeToCleanUp = 5f;
-        private const float timeToStartDestruction = 2f;
         private const float timeToReconstructObject = 2f;
-        private const float cycleTime = 0.2f;
         private const float timerTimeUnit = 1f;
         
         private void Start()
         {
-            TriggerBreak();
+            // Removed TriggerBreak(); so objects do not break on spawn
         }
 
-        private void TriggerBreak()
+        public void Break()
         {
-            // Methods For Cyclic Use (I.E Destroy On Loop -  For Showcase)
-            if (isCyclic)
-            {
-                StartCoroutine(CycleDestruction());
-            }
-            // Methods For Single Use (I.E Destroy Once)
-            else
-            {
-                StartCoroutine(DestroyOnce());
-            }
-        }
+            if (isBroken) return; // Prevent breaking multiple times
 
-        // Core Methods For Single Use (I.E Destroy Once)
-        private IEnumerator DestroyOnce()
-        {
-            objectReseted = false;
             shouldBreak = true;
-            yield return null;
         }
 
         private void Update()
@@ -61,8 +44,7 @@ namespace WeaponsAndPropsAssetPack_NAS.Scripts
         private void BreakObject()
         {
             wholeObject.gameObject.SetActive(false);
-            fracturedObjectInstance = Instantiate(fracturedObject);
-            fracturedObjectInstance.position = wholeObject.position;
+            fracturedObjectInstance = Instantiate(fracturedObject, wholeObject.position, wholeObject.rotation);
             fracturedObjectInstance.gameObject.SetActive(true);
             isBroken = true;
             shouldBreak = false;
@@ -101,7 +83,6 @@ namespace WeaponsAndPropsAssetPack_NAS.Scripts
                 timer += 1f;
             }
 
-            // Methods For Cyclic Use (I.E Destroy On Loop -  For Showcase)
             if (isCyclic)
             {
                 yield return ResetObject();
@@ -110,18 +91,12 @@ namespace WeaponsAndPropsAssetPack_NAS.Scripts
             yield return null;
         }
 
-        // Methods For Cyclic Use (I.E Destroy On Loop -  For Showcase)
-        private IEnumerator CycleDestruction()
+        // Detects collision with weapons or objects tagged as "Weapon"
+        private void OnCollisionEnter(Collision collision)
         {
-            while (true)
+            if (collision.gameObject.CompareTag("Weapon")) // Make sure the weapon has this tag
             {
-                if (objectReseted)
-                {
-                    yield return new WaitForSeconds(timeToStartDestruction);
-                    objectReseted = false;
-                    shouldBreak = true;
-                }
-                yield return new WaitForSeconds(cycleTime);
+                Break();
             }
         }
     }
